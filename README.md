@@ -13,17 +13,11 @@ Turn your GitHub repo’s contributor list into a visual world tour! Our lightwe
 
 ---
 
-## 🎨 Live Demo
+## Embed the Badge‑Style Map
 
-Check it out in action on GitHub Pages:
+Just drop this line into your README:
 
-[https://ux-git.github.io/contributors-map-widget/](https://ux-git.github.io/contributors-map-widget/)
-
----
-
-## 📦 Usage / Embed Guide
-
-1. **Include the stylesheet** in your HTML or Markdown:
-   ```![Contributors Map](https://raw.githubusercontent.com/ux-git/contributors-map-widget/main/map.svg)
-   
+```md
 ![Contributors Map](https://raw.githubusercontent.com/ux-git/contributors-map-widget/main/map.svg)
+
+[Contributors Map](https://raw.githubusercontent.com/ux-git/contributors-map-widget/main/map.svg)
