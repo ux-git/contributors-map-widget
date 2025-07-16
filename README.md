@@ -17,8 +17,9 @@ Turn your GitHub repo’s contributor list into a visual world tour! Our lightwe
 
 Just drop this line into your README:
 
-```md
+```markdown
+![Contributors Map](https://raw.githubusercontent.com/ux-git/contributors-map-widget/main/map.svg)
+```
+
 ![Contributors Map](https://raw.githubusercontent.com/ux-git/contributors-map-widget/main/map.svg)
 
-
-[Contributors Map](https://raw.githubusercontent.com/ux-git/contributors-map-widget/main/map.svg)
