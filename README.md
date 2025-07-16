@@ -13,7 +13,7 @@ Turn your GitHub repo’s contributor list into a visual world tour! Our lightwe
 
 ---
 
-## Embed the Badge‑Style Map
+## Embed the Map
 
 Just drop this line into your README:
 
