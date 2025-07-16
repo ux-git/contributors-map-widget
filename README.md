@@ -21,5 +21,4 @@ Just drop this line into your README:
 ![Contributors Map](https://raw.githubusercontent.com/ux-git/contributors-map-widget/main/map.svg)
 ```
 
-<<<<<<< HEAD
 [Contributors Map](https://raw.githubusercontent.com/ux-git/contributors-map-widget/main/map.svg)
