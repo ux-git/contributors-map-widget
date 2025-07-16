@@ -4,100 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Contributors Map</title>
-  <style>
-    /* Reset page margins */
-    html, body {
-      margin: 0;
-      padding: 0;
-    }
-
-    /* 16:9 ratio wrapper, hidden overflow so SVG always fills */
-    #map-container {
-      position: relative;
-      width: 100%;
-      padding-top: 56.25%; /* 450 ÷ 800 = 0.5625 */
-      overflow: hidden;
-    }
-
-    /* SVG absolutely fills the wrapper */
-    #world-map {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    /* Country shapes */
-    svg path {
-      fill: #eee;
-      stroke: #999;
-    }
-    svg path.active {
-      fill: #003366;
-    }
-  </style>
+  <!-- point to your external stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <!-- this container holds the map -->
+  <div id="map-container"></div>
 
-  <div id="map-container">
-    <svg
-      id="world-map"
-      viewBox="0 0 800 450"
-      preserveAspectRatio="xMidYMid slice"
-    ></svg>
-  </div>
-
-  <!-- libs -->
+  <!-- libs from CDNs -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://unpkg.com/topojson-client@3"></script>
   <script src="https://unpkg.com/i18n-iso-countries/index.js"></script>
 
-  <script>
-    const OWNER = "ux-git";
-    const REPO  = "contributors-map-widget";
-
-    const svg = d3.select("#world-map");
-    const projection = d3.geoMercator().scale(130).translate([400,225]);
-    const path = d3.geoPath().projection(projection);
-
-    // Draw the base map
-    d3.json("https://unpkg.com/world-atlas@2/countries-110m.json")
-      .then(topology => {
-        const countries = topojson
-          .feature(topology, topology.objects.countries)
-          .features;
-        svg.selectAll("path")
-          .data(countries)
-          .enter().append("path")
-            .attr("d", path)
-            .attr("id", d => d.id);
-        refresh();
-        setInterval(refresh, 3600_000);
-      });
-
-    // Fetch contributors and light up their countries
-    function refresh() {
-      svg.selectAll("path").classed("active", false);
-      fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contributors?per_page=100`)
-        .then(r => r.json())
-        .then(list => {
-          list.forEach(c =>
-            fetch(c.url)
-              .then(r => r.json())
-              .then(user => {
-                const loc = (user.location || "").toLowerCase();
-                const names = window.i18nIsoCountries.getNames("en");
-                const match = Object.entries(names)
-                  .find(([iso, name]) => loc.includes(name.toLowerCase()));
-                if (match) {
-                  svg.select(`#${match[0]}`).classed("active", true);
-                }
-              })
-          );
-        });
-    }
-  </script>
+  <!-- your widget code, passing owner/repo -->
+  <script
+    src="js/widget.js"
+    data-owner="ux-git"
+    data-repo="contributors-map-widget"
+  ></script>
 </body>
 </html>
