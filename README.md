@@ -24,6 +24,6 @@ Check it out in action on GitHub Pages:
 ## 📦 Usage / Embed Guide
 
 1. **Include the stylesheet** in your HTML or Markdown:
-   ```![Activity map](https://ux-git.github.io/contributors-map-widget/map.svg)
-
-![Activity map](https://ux-git.github.io/contributors-map-widget/map.svg)
+   ```![Contributors Map](https://raw.githubusercontent.com/ux-git/contributors-map-widget/main/map.svg)
+   
+![Contributors Map](https://raw.githubusercontent.com/ux-git/contributors-map-widget/main/map.svg)
