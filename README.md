@@ -20,4 +20,5 @@ Just drop this line into your README:
 ```md
 ![Contributors Map](https://raw.githubusercontent.com/ux-git/contributors-map-widget/main/map.svg)
 
+
 [Contributors Map](https://raw.githubusercontent.com/ux-git/contributors-map-widget/main/map.svg)
