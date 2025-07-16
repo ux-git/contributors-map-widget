@@ -11,24 +11,25 @@
       padding: 0;
     }
 
-    /* 16:9 ratio wrapper: padding-top = 450/800 * 100% */
+    /* 16:9 ratio wrapper, hidden overflow so SVG always fills */
     #map-container {
       position: relative;
       width: 100%;
       padding-top: 56.25%; /* 450 ÷ 800 = 0.5625 */
+      overflow: hidden;
     }
 
-    /* Absolute‐position the SVG to fill the wrapper */
+    /* SVG absolutely fills the wrapper */
     #world-map {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      display: block; /* remove inline‐SVG gaps */
+      display: block;
     }
 
-    /* Country styling */
+    /* Country shapes */
     svg path {
       fill: #eee;
       stroke: #999;
@@ -40,16 +41,15 @@
 </head>
 <body>
 
-  <!-- ratio‐constrained container -->
   <div id="map-container">
     <svg
       id="world-map"
       viewBox="0 0 800 450"
-      preserveAspectRatio="xMidYMid meet"
+      preserveAspectRatio="xMidYMid slice"
     ></svg>
   </div>
 
-  <!-- Libraries -->
+  <!-- libs -->
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://unpkg.com/topojson-client@3"></script>
   <script src="https://unpkg.com/i18n-iso-countries/index.js"></script>
@@ -77,6 +77,7 @@
         setInterval(refresh, 3600_000);
       });
 
+    // Fetch contributors and light up their countries
     function refresh() {
       svg.selectAll("path").classed("active", false);
       fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contributors?per_page=100`)
