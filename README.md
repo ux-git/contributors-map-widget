@@ -24,8 +24,6 @@ Check it out in action on GitHub Pages:
 ## 📦 Usage / Embed Guide
 
 1. **Include the stylesheet** in your HTML or Markdown:
-   ```html
-   <link
-     rel="stylesheet"
-     href="https://ux-git.github.io/contributors-map-widget/css/style.css"
-   >
+   ```![Activity map](https://ux-git.github.io/contributors-map-widget/map.svg)
+
+![Activity map](https://ux-git.github.io/contributors-map-widget/map.svg)
