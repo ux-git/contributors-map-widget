@@ -17,8 +17,6 @@ Turn your GitHub repo’s contributor list into a visual world tour! Our lightwe
 
 Just drop this line into your README:
 
-```markdown
 ![Contributors Map](https://raw.githubusercontent.com/ux-git/contributors-map-widget/main/map.svg)
-```
 
-[Contributors Map](https://raw.githubusercontent.com/ux-git/contributors-map-widget/main/map.svg)
+*(That single line above will render the live SVG badge directly in any Markdown view.)*
