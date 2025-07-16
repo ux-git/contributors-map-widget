@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Contributors Map Widget</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f6f8fa;
+            color: #24292e;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #0969da;
+            border-bottom: 1px solid #d0d7de;
+            padding-bottom: 10px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        button {
+            background: #0969da;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background: #0860ca;
+        }
+        button:disabled {
+            background: #8b949e;
+            cursor: not-allowed;
+        }
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f6f8fa;
+            border-radius: 6px;
+            border: 1px solid #d0d7de;
+        }
+        .error {
+            color: #d1242f;
+            background: #ffebee;
+            border-color: #f5c6cb;
+        }
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #656d76;
+        }
+        .copy-section {
+            margin-top: 15px;
+        }
+        .copy-section textarea {
+            width: 100%;
+            height: 100px;
+            resize: vertical;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .preview {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .github-link {
+            color: #0969da;
+            text-decoration: none;
+        }
+        .github-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 GitHub Contributors Map Widget</h1>
+        <p>Create an embeddable SVG badge showing contributors for any public GitHub repository.</p>
+        
+        <form id="contributorsForm">
+            <div class="form-group">
+                <label for="owner">Repository Owner:</label>
+                <input type="text" id="owner" value="ux-git" placeholder="e.g., microsoft, facebook, google">
+            </div>
+            
+            <div class="form-group">
+                <label for="repo">Repository Name:</label>
+                <input type="text" id="repo" value="contributors-map-widget" placeholder="e.g., vscode, react, tensorflow">
+            </div>
+            
+            <div class="form-group">
+                <label for="maxContributors">Max Contributors:</label>
+                <select id="maxContributors">
+                    <option value="6">6</option>
+                    <option value="12" selected>12</option>
+                    <option value="18">18</option>
+                    <option value="24">24</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="theme">Theme:</label>
+                <select id="theme">
+                    <option value="light" selected>Light</option>
+                    <option value="dark">Dark</option>
+                    <option value="github">GitHub</option>
+                </select>
+            </div>
+            
+            <button type="submit">Generate Badge</button>
+            <button type="button" id="copyUrl">Copy Embeddable URL</button>
+        </form>
+        
+        <div id="result" class="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        // GitHub API rate limiting cache
+        const cache = new Map();
+        const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+        // Theme configurations
+        const themes = {
+            light: {
+                background: '#ffffff',
+                border: '#e1e4e8',
+                headerBg: '#f6f8fa',
+                headerText: '#24292e',
+                countText: '#586069',
+                shadow: 'rgba(27,31,35,0.04)'
+            },
+            dark: {
+                background: '#0d1117',
+                border: '#30363d',
+                headerBg: '#21262d',
+                headerText: '#f0f6fc',
+                countText: '#8b949e',
+                shadow: 'rgba(0,0,0,0.3)'
+            },
+            github: {
+                background: '#ffffff',
+                border: '#0969da',
+                headerBg: '#0969da',
+                headerText: '#ffffff',
+                countText: '#656d76',
+                shadow: 'rgba(9,105,218,0.1)'
+            }
+        };
+
+        async function fetchContributors(owner, repo) {
+            const cacheKey = `${owner}/${repo}`;
+            
+            // Check cache first
+            const cached = cache.get(cacheKey);
+            if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+                return cached.data;
+            }
+            
+            try {
+                const response = await fetch(`https://api.github.com/repos/${owner}/${repo}/contributors`);
+                
+                if (!response.ok) {
+                    throw new Error(`GitHub API error: ${response.status} ${response.statusText}`);
+                }
+                
+                const contributors = await response.json();
+                
+                // Cache the result
+                cache.set(cacheKey, {
+                    data: contributors,
+                    timestamp: Date.now()
+                });
+                
+                return contributors;
+            } catch (error) {
+                console.error('Error fetching contributors:', error);
+                throw error;
+            }
+        }
+
+        function generateSVG(contributors, owner, repo, options = {}) {
+            const {
+                maxContributors = 12,
+                theme = 'light'
+            } = options;
+            
+            const themeConfig = themes[theme];
+            const avatarSize = 32;
+            const spacing = 4;
+            const avatarsPerRow = 6;
+            
+            // Sort and limit contributors
+            const topContributors = contributors
+                .sort((a, b) => b.contributions - a.contributions)
+                .slice(0, maxContributors);
+            
+            const rows = Math.ceil(topContributors.length / avatarsPerRow);
+            const badgeWidth = avatarsPerRow * (avatarSize + spacing) + spacing * 2;
+            const headerHeight = 35;
+            const avatarAreaHeight = rows * (avatarSize + spacing) + spacing;
+            const badgeHeight = headerHeight + avatarAreaHeight + 10;
+            
+            const totalContributions = topContributors.reduce((sum, c) => sum + c.contributions, 0);
+            
+            // Generate avatar elements
+            const avatarElements = topContributors.map((contributor, index) => {
+                const row = Math.floor(index / avatarsPerRow);
+                const col = index % avatarsPerRow;
+                const x = col * (avatarSize + spacing) + spacing * 2;
+                const y = headerHeight + row * (avatarSize + spacing) + spacing;
+                
+                return `
+                    <g class="contributor" data-login="${contributor.login}" data-contributions="${contributor.contributions}">
+                        <circle cx="${x + avatarSize/2}" cy="${y + avatarSize/2}" r="${avatarSize/2}" 
+                                fill="${themeConfig.border}" stroke="${themeConfig.border}" stroke-width="1"/>
+                        <image href="${contributor.avatar_url}" 
+                               x="${x + 1}" y="${y + 1}" width="${avatarSize - 2}" height="${avatarSize - 2}" 
+                               clip-path="circle(${(avatarSize-2)/2}px at ${(avatarSize-2)/2}px ${(avatarSize-2)/2}px)"/>
+                        <title>${contributor.login} - ${contributor.contributions} contributions</title>
+                    </g>
+                `;
+            }).join('');
+            
+            return `
+                <svg width="${badgeWidth}" height="${badgeHeight}" viewBox="0 0 ${badgeWidth} ${badgeHeight}" 
+                     xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <filter id="shadow">
+                            <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="${themeConfig.shadow}"/>
+                        </filter>
+                        <style>
+                            .contributor:hover circle { stroke-width: 2; stroke: #0969da; }
+                            .header-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+                        </style>
+                    </defs>
+                    
+                    <!-- Background -->
+                    <rect width="${badgeWidth}" height="${badgeHeight}" rx="6" 
+                          fill="${themeConfig.background}" stroke="${themeConfig.border}" 
+                          stroke-width="1" filter="url(#shadow)"/>
+                    
+                    <!-- Header -->
+                    <rect x="1" y="1" width="${badgeWidth - 2}" height="${headerHeight - 1}" rx="5" 
+                          fill="${themeConfig.headerBg}"/>
+                    
+                    <!-- Title -->
+                    <text x="${badgeWidth/2}" y="16" text-anchor="middle" 
+                          fill="${themeConfig.headerText}" font-size="12" font-weight="600" 
+                          class="header-text">
+                        ${owner}/${repo}
+                    </text>
+                    
+                    <!-- Stats -->
+                    <text x="${badgeWidth/2}" y="28" text-anchor="middle" 
+                          fill="${themeConfig.countText}" font-size="10" 
+                          class="header-text">
+                        ${topContributors.length} contributors • ${totalContributions.toLocaleString()} contributions
+                    </text>
+                    
+                    <!-- Contributors -->
+                    ${avatarElements}
+                </svg>
+            `;
+        }
+
+        function showResult(content, isError = false) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = content;
+            resultDiv.className = `result ${isError ? 'error' : ''}`;
+            resultDiv.style.display = 'block';
+        }
+
+        function generateEmbeddableUrl(owner, repo, options = {}) {
+            const params = new URLSearchParams({
+                owner,
+                repo,
+                ...options
+            });
+            return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+        }
+
+        // Handle form submission
+        document.getElementById('contributorsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const owner = document.getElementById('owner').value.trim();
+            const repo = document.getElementById('repo').value.trim();
+            const maxContributors = parseInt(document.getElementById('maxContributors').value);
+            const theme = document.getElementById('theme').value;
+            
+            if (!owner || !repo) {
+                showResult('Please enter both repository owner and name.', true);
+                return;
+            }
+            
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Generating...';
+            
+            showResult(`
+                <div class="loading">
+                    <p>🔄 Fetching contributors for ${owner}/${repo}...</p>
+                </div>
+            `);
+            
+            try {
+                const contributors = await fetchContributors(owner, repo);
+                
+                if (!contributors || contributors.length === 0) {
+                    showResult(`No contributors found for ${owner}/${repo}. Make sure the repository exists and is public.`, true);
+                    return;
+                }
+                
+                const svg = generateSVG(contributors, owner, repo, { maxContributors, theme });
+                const embeddableUrl = generateEmbeddableUrl(owner, repo, { maxContributors, theme });
+                
+                showResult(`
+                    <h3>✅ Badge Generated Successfully!</h3>
+                    <div class="preview">
+                        ${svg}
+                    </div>
+                    
+                    <div class="copy-section">
+                        <h4>Embeddable URL:</h4>
+                        <textarea readonly id="embeddableUrl">${embeddableUrl}</textarea>
+                        <button onclick="copyToClipboard('embeddableUrl')">Copy URL</button>
+                    </div>
+                    
+                    <div class="copy-section">
+                        <h4>Markdown (for README):</h4>
+                        <textarea readonly id="markdownCode">![Contributors](${embeddableUrl})</textarea>
+                        <button onclick="copyToClipboard('markdownCode')">Copy Markdown</button>
+                    </div>
+                    
+                    <div class="copy-section">
+                        <h4>HTML:</h4>
+                        <textarea readonly id="htmlCode">&lt;img src="${embeddableUrl}" alt="Contributors" /&gt;</textarea>
+                        <button onclick="copyToClipboard('htmlCode')">Copy HTML</button>
+                    </div>
+                    
+                    <div class="copy-section">
+                        <h4>Raw SVG:</h4>
+                        <textarea readonly id="rawSvg">${svg}</textarea>
+                        <button onclick="copyToClipboard('rawSvg')">Copy SVG</button>
+                    </div>
+                    
+                    <p><strong>Found ${contributors.length} contributors</strong> • 
+                       <a href="https://github.com/${owner}/${repo}/graphs/contributors" 
+                          target="_blank" class="github-link">View on GitHub</a></p>
+                `);
+                
+            } catch (error) {
+                showResult(`Error: ${error.message}`, true);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Generate Badge';
+            }
+        });
+
+        // Copy to clipboard function
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            element.select();
+            document.execCommand('copy');
+            
+            // Show feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Copied!';
+            button.style.background = '#28a745';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = '#0969da';
+            }, 1500);
+        }
+
+        // Copy URL button
+        document.getElementById('copyUrl').addEventListener('click', () => {
+            const owner = document.getElementById('owner').value.trim();
+            const repo = document.getElementById('repo').value.trim();
+            
+            if (!owner || !repo) {
+                alert('Please enter repository owner and name first.');
+                return;
+            }
+            
+            const maxContributors = parseInt(document.getElementById('maxContributors').value);
+            const theme = document.getElementById('theme').value;
+            const url = generateEmbeddableUrl(owner, repo, { maxContributors, theme });
+            
+            navigator.clipboard.writeText(url).then(() => {
+                const button = document.getElementById('copyUrl');
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '#0969da';
+                }, 1500);
+            });
+        });
+
+        // Handle URL parameters for direct SVG generation
+        window.addEventListener('load', () => {
+            const params = new URLSearchParams(window.location.search);
+            const owner = params.get('owner');
+            const repo = params.get('repo');
+            
+            if (owner && repo) {
+                // If we have URL parameters, generate SVG directly
+                const maxContributors = parseInt(params.get('maxContributors')) || 12;
+                const theme = params.get('theme') || 'light';
+                
+                // For direct SVG serving, we'll show the form but also generate immediately
+                document.getElementById('owner').value = owner;
+                document.getElementById('repo').value = repo;
+                document.getElementById('maxContributors').value = maxContributors;
+                document.getElementById('theme').value = theme;
+                
+                // Auto-generate
+                document.getElementById('contributorsForm').dispatchEvent(new Event('submit'));
+            }
+        });
+    </script>
+</body>
+</html>
