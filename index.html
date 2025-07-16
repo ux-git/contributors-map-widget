@@ -17,8 +17,9 @@
   <script src="https://unpkg.com/i18n-iso-countries/index.js"></script>
 
   <script>
-    const OWNER = "YOUR‑USERNAME";      // ← your GitHub username
-    const REPO  = "contributors-map-widget";  // ← your repo name
+    // ← YOUR GitHub username and repo name:
+    const OWNER = "ux-git";
+    const REPO  = "contributors-map-widget";
 
     const svg = d3.select("#world-map");
     const projection = d3.geoMercator().scale(130).translate([400,225]);
