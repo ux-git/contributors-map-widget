@@ -41,3 +41,9 @@
 - Ported the exact verified geometry, preserved themes/variants and attribution, corrected island country IDs and exact Niger resolution. Server code commit `c5bdb8837f01b7eb83695a5a53f403394192a52f` pushed to main.
 - All 256 original location cases and 3 new renderer/route tests passed; Chrome checked both variants/themes at 375px and 1440px; Python dependencies passed `pip check`.
 - Vercel production deployment `7160566917` succeeded. At `2026-10-18T20:52:38Z`, the original service URL and GitHub Camo image both served `mercator-v2`. Actual Organized README image verified in Chrome; no README modification or cache purge needed.
+
+## 2026-10-18 — Taller README map card
+
+- Server card now 1200×600 (2:1), with a full-width map column and less header gap; map is approximately 26% larger in each dimension.
+- Server commit `c928f774500809c991a1afcbfb4cf303dbd7e16e` pushed; Vercel deployment `7160749156` succeeded. Origin and GitHub Camo both verified at 1200×600 at `2026-10-18T21:08:17.375370+00:00`.
+- All 256 location cases and 3 renderer tests pass; both themes visually checked at 375/768/1440px in Chrome. Audit: zero vulnerabilities.

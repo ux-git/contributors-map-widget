@@ -2,19 +2,19 @@
   "project": "contributors-map-widget",
   "updated": "2026-10-18",
   "owner": "Codex",
-  "task": "Update actual Vercel README heatmap service and refresh Organized image",
+  "task": "Increase README heatmap card height for Mercator fit",
   "status": "complete",
   "scope": [
-    "server heatmap asset integration",
-    "Vercel deployment verification",
+    "server api/widget.py layout",
+    "browser verification",
     "documentation"
   ],
   "baseCommit": "07d91d0e9214abe5629907ab1f24f03f3a74b49b",
-  "deployment": "GitHub Pages deployment 7160468397 succeeded; public files verified 2026-10-18 22:44 CEST; separate Vercel README server c5bdb88 verified 22:52 CEST, deployment 7160566917",
+  "deployment": "GitHub Pages remains c2314d6; Vercel taller README card c928f77 verified live, deployment 7160749156",
   "validation": "61 automated checks and 78 CI browser tests passed, including Firefox, Chromium and WebKit. All 12 live file hashes match the build. Public desktop/mobile, theme, SVG download and real GitHub generation passed. Audit: 0 vulnerabilities.",
   "verifiedTarget": "https://ux-git.github.io/contributors-map-widget/",
   "verificationDate": "2026-10-18",
-  "worktree": "Server code c5bdb88 pushed and verified separately from GitHub Pages.",
+  "worktree": "Taller README server card deployed; local changes are release documentation.",
   "nextStep": "No release blockers. Reload the Organized README to see its updated server image.",
   "productionArtifact": "dist/ (12 public files plus SHA-256 manifest; generated, not committed)",
   "limitations": [
@@ -27,10 +27,10 @@
   "deploymentId": 7160468397,
   "serverDeployment": {
     "repository": "https://github.com/sws2apps/github-contribution-heatmap",
-    "websiteCommit": "c5bdb8837f01b7eb83695a5a53f403394192a52f",
-    "deploymentId": 7160566917,
+    "websiteCommit": "c928f774500809c991a1afcbfb4cf303dbd7e16e",
+    "deploymentId": 7160749156,
     "target": "https://github-contribution-heatmap.vercel.app/api/heatmap?repo=sws2apps/organized-app",
-    "verifiedAt": "2026-10-18T20:52:38Z",
-    "evidence": "Vercel success; origin and GitHub Camo SVG contain mercator-v2; actual README image decoded in Chrome. 256 baseline country cases and 3 renderer/route tests pass; 375px/1440px checked."
+    "verifiedAt": "2026-10-18T21:08:17.375370+00:00",
+    "evidence": "Vercel success; origin and GitHub Camo both serve 1200x600 SVG. 256 country cases and 3 renderer tests pass; both themes visually checked at 375/768/1440px."
   }
 }

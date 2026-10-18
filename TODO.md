@@ -18,3 +18,5 @@ Release c2314d6 is pushed and verified live on GitHub Pages. See project-state.j
 - [x] README heatmap refresh — Owner: Codex. Actual image is served by sws2apps/github-contribution-heatmap on Vercel; port verified map geometry to that service, test, deploy and refresh the GitHub image.
 
 Server release c5bdb88 is verified on Vercel and in the Organized README image. No image URL change or purge was needed.
+
+- [x] Taller README card — Owner: Codex. Scope: server list card proportions, fit, browser verification and deployment.
