@@ -1,5 +1,7 @@
 # Contributors Map
 
+[Open the live widget](https://ux-git.github.io/contributors-map-widget/) · [Explore sample data](https://ux-git.github.io/contributors-map-widget/?sample=1)
+
 A standalone Mercator map of the countries reported in a GitHub repository's contributor profiles. Antarctica is omitted, and Russia's antimeridian fragments are joined to its eastern edge. The same country resolver and SVG renderer power the browser and CLI.
 
 ## Run locally
@@ -61,7 +63,7 @@ npm run prepare:map
 
 Browser tests use installed Google Chrome locally and Playwright Firefox/WebKit. CI installs its own browsers. Run `npx playwright install firefox webkit` for local cross-engine testing. Coverage includes 1440px desktop, 768px tablet, 375px mobile, and 320px narrow layouts, plus keyboard access, text reflow, and axe accessibility checks in all three map themes. Screenshots and failure traces go to ignored `test-results/`.
 
-On the current macOS host, Firefox cannot launch its isolated profile; Chromium and WebKit have passed. To reproduce the verified local subset: `TEST_DIST=1 npm run test:browser -- --project=desktop --project=tablet --project=mobile --project=small --project=webkit`. Firefox remains enabled in the full suite and CI; its local launch failure is not counted as a pass.
+On the current macOS host, Firefox cannot launch its isolated profile; Chromium and WebKit have passed. To reproduce the verified local subset: `TEST_DIST=1 npm run test:browser -- --project=desktop --project=tablet --project=mobile --project=small --project=webkit`. Firefox passed on Ubuntu in the release CI run; its local macOS launch limitation remains documented.
 
 Preparation starts with the checked-in original SVG, removes AQ, translates only Russia's left-edge polygons by the exact 960-unit world width, unions touching fragments to eliminate cut seams, and calculates a padded viewBox. Other country geometry is untouched. Regeneration is deterministic and does not need the network.
 

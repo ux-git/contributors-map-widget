@@ -5,12 +5,12 @@
 - [x] Final verification: 55 current automated logic/geometry/API/documentation checks; 24 browser scenarios across four viewport sizes; live CLI and localhost GitHub generation; audit with zero vulnerabilities.
 - [x] Record results and limitations in VALIDATION.md and generated PROJECT_STATUS.md.
 
-No implementation blockers remain. Changes are local and uncommitted. No push/deployment was requested or performed. Optional next step: review the localhost page before deciding whether to publish.
+Release c2314d6 is pushed and verified live on GitHub Pages. See project-state.json and VALIDATION.md for exact deployment evidence.
 
 - [x] Remove geographic-change callouts from user-facing copy — Owner: Codex. Scope: page, SVG descriptions, related styles and status.
 
 - [x] Production readiness audit — Owner: Codex. Scope: responsive widget layout, accessibility, request/error handling, SVG exports, static distribution, CI, tests and documentation. Preserve prior work; no deployment.
 
-- [ ] Release verification: run the prepared CI workflow, including Firefox (local launch is blocked), before publishing. No deployment requested.
+- [x] Release verification: all 78 CI browser tests passed, including Firefox on Ubuntu.
 
-- [ ] Push and deploy — Owner: Codex. Scope: release workflow, repository changes from this chat, GitHub Pages configuration, live verification and release documentation. Authorized by user 2026-10-18.
+- [x] Push and deploy — Owner: Codex. Scope: release workflow, repository changes from this chat, GitHub Pages configuration, live verification and release documentation. Authorized by user 2026-10-18.

@@ -27,3 +27,10 @@
 - User authorized push and deployment. Added GitHub Pages artifact deployment gated on all checks, with read-only PR validation and documentation-only push exclusion.
 - Adjusted WebKit keyboard testing to use the platform-specific navigation chord on macOS and standard Tab on Linux CI.
 - Existing public site identified as https://ux-git.github.io/contributors-map-widget/. Release remains pending until CI and live verification succeed.
+
+## 2026-10-18 — Live release verified
+
+- Pushed website commit `c2314d6e02c6734a4832e63bef9e22aff2017e60` to main.
+- All 61 automated checks and 78 browser tests passed in [CI run 39164523992](https://github.com/ux-git/contributors-map-widget/actions/runs/39164523992), including Firefox on Ubuntu. Deployment 7160468397 succeeded to GitHub Pages.
+- Verified https://ux-git.github.io/contributors-map-widget/ at 22:44 CEST: all 12 public files match the build manifest; desktop/mobile, dark theme, SVG downloads, and live GitHub data generation passed without page errors.
+- This follow-up is documentation only and does not redeploy. The website codebase remains c2314d6 even if repository HEAD advances.

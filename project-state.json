@@ -2,8 +2,8 @@
   "project": "contributors-map-widget",
   "updated": "2026-10-18",
   "owner": "Codex",
-  "task": "Push reviewed release and deploy verified static build to existing GitHub Pages site",
-  "status": "release_in_progress",
+  "task": "Release pushed, deployed to GitHub Pages, and publicly verified",
+  "status": "live_verified",
   "scope": [
     "index.html",
     "style.css",
@@ -16,16 +16,19 @@
     "documentation"
   ],
   "baseCommit": "07d91d0e9214abe5629907ab1f24f03f3a74b49b",
-  "deployment": "Existing GitHub Pages site found; updated release not deployed yet",
-  "validation": "61 unit/geometry/API/documentation checks and 65 Chromium/WebKit production browser checks passed; axe scans clean in all map themes; formatting, artifact integrity and audit passed (0 vulnerabilities). Firefox cannot launch its profile locally; retained in CI.",
-  "verifiedTarget": "http://127.0.0.1:4174",
+  "deployment": "GitHub Pages deployment 7160468397 succeeded; public files verified 2026-10-18 22:44 CEST",
+  "validation": "61 automated checks and 78 CI browser tests passed, including Firefox, Chromium and WebKit. All 12 live file hashes match the build. Public desktop/mobile, theme, SVG download and real GitHub generation passed. Audit: 0 vulnerabilities.",
+  "verifiedTarget": "https://ux-git.github.io/contributors-map-widget/",
   "verificationDate": "2026-10-18",
-  "worktree": "Uncommitted; no push",
-  "nextStep": "Run CI including Firefox; deploy only on success; verify public assets.",
+  "worktree": "Release c2314d6 pushed to main; verification recorded in documentation.",
+  "nextStep": "No release blockers. Future main code changes deploy only after CI passes.",
   "productionArtifact": "dist/ (12 public files plus SHA-256 manifest; generated, not committed)",
   "limitations": [
-    "Firefox local process fails before page launch with profile-folder error",
-    "New CI workflow not yet run remotely",
-    "No physical-device or native Safari verification"
-  ]
+    "No physical-device or native Safari verification; WebKit engine tested",
+    "GitHub public API limits still apply; larger CLI requests can use an environment token"
+  ],
+  "websiteCommit": "c2314d6e02c6734a4832e63bef9e22aff2017e60",
+  "verifiedAt": "2026-10-18T20:44:46.717Z",
+  "workflowRun": "https://github.com/ux-git/contributors-map-widget/actions/runs/39164523992",
+  "deploymentId": 7160468397
 }

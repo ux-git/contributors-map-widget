@@ -38,3 +38,15 @@ Current checks include 61 logic/geometry/API/documentation tests, Chromium and W
 Firefox limitation: the Playwright Firefox binary exits before opening a page with “Could not find profile folder.” This reproduced with the default temporary directory, /private/tmp, and an isolated workspace profile. Firefox tests are retained for CI on Ubuntu; no Firefox verification is claimed locally. WebKit uses Alt+Tab for full keyboard navigation under macOS conventions. Tests use emulated viewports, not physical phones or native Safari.
 
 The static artifact’s allowlist, byte-for-byte source parity and SHA-256 manifest are checked by `npm run verify:build`. `map.svg` was refreshed against live public GitHub data (1 contributor, Germany). The CI workflow is prepared but has not run remotely. The production preview is local only at port 4174.
+
+## Public release verification — 2026-10-18, 22:44 CEST
+
+- Website commit: `c2314d6e02c6734a4832e63bef9e22aff2017e60`, pushed to `origin/main`.
+- Host: https://ux-git.github.io/contributors-map-widget/ (HTTPS enforced).
+- [Workflow 39164523992](https://github.com/ux-git/contributors-map-widget/actions/runs/39164523992): validation and deployment successful. 61 logic/geometry/API/documentation checks; 78 browser tests across Chromium, Firefox, and WebKit passed. Dependency audit clean.
+- GitHub Pages deployment: `7160468397`, environment `github-pages`, created at `2026-10-18T20:43:54Z` for that exact website commit. Pages now deploys the validated artifact instead of publishing the repository root.
+- At `2026-10-18T20:44:46.717Z`, live manifest matched the local release manifest; all 12 published files returned HTTP 200 and matched their expected SHA-256 hashes.
+- Public browser smoke passed at 1440px and 375px: sample loads 256 regions, expected country totals, no horizontal overflow, dark theme, SVG download. Real GitHub generation returned 1 country, 1 mapped contributor, 0 unmapped. No page errors.
+- Previous source remains available in Git at `07d91d0e9214abe5629907ab1f24f03f3a74b49b`; history was not rewritten. This verification follow-up changes documentation only; it does not change the deployed website commit.
+
+Earlier statements about local-only status and unexecuted CI above describe the corresponding earlier checkpoints; this release record supersedes them.
