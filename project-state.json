@@ -2,26 +2,20 @@
   "project": "contributors-map-widget",
   "updated": "2026-10-18",
   "owner": "Codex",
-  "task": "Release pushed, deployed to GitHub Pages, and publicly verified",
-  "status": "live_verified",
+  "task": "Update actual Vercel README heatmap service and refresh Organized image",
+  "status": "complete",
   "scope": [
-    "index.html",
-    "style.css",
-    "js",
-    "scripts",
-    "tests",
-    "package.json",
-    "package-lock.json",
-    ".github",
+    "server heatmap asset integration",
+    "Vercel deployment verification",
     "documentation"
   ],
   "baseCommit": "07d91d0e9214abe5629907ab1f24f03f3a74b49b",
-  "deployment": "GitHub Pages deployment 7160468397 succeeded; public files verified 2026-10-18 22:44 CEST",
+  "deployment": "GitHub Pages deployment 7160468397 succeeded; public files verified 2026-10-18 22:44 CEST; separate Vercel README server c5bdb88 verified 22:52 CEST, deployment 7160566917",
   "validation": "61 automated checks and 78 CI browser tests passed, including Firefox, Chromium and WebKit. All 12 live file hashes match the build. Public desktop/mobile, theme, SVG download and real GitHub generation passed. Audit: 0 vulnerabilities.",
   "verifiedTarget": "https://ux-git.github.io/contributors-map-widget/",
   "verificationDate": "2026-10-18",
-  "worktree": "Release c2314d6 pushed to main; verification recorded in documentation.",
-  "nextStep": "No release blockers. Future main code changes deploy only after CI passes.",
+  "worktree": "Server code c5bdb88 pushed and verified separately from GitHub Pages.",
+  "nextStep": "No release blockers. Reload the Organized README to see its updated server image.",
   "productionArtifact": "dist/ (12 public files plus SHA-256 manifest; generated, not committed)",
   "limitations": [
     "No physical-device or native Safari verification; WebKit engine tested",
@@ -30,5 +24,13 @@
   "websiteCommit": "c2314d6e02c6734a4832e63bef9e22aff2017e60",
   "verifiedAt": "2026-10-18T20:44:46.717Z",
   "workflowRun": "https://github.com/ux-git/contributors-map-widget/actions/runs/39164523992",
-  "deploymentId": 7160468397
+  "deploymentId": 7160468397,
+  "serverDeployment": {
+    "repository": "https://github.com/sws2apps/github-contribution-heatmap",
+    "websiteCommit": "c5bdb8837f01b7eb83695a5a53f403394192a52f",
+    "deploymentId": 7160566917,
+    "target": "https://github-contribution-heatmap.vercel.app/api/heatmap?repo=sws2apps/organized-app",
+    "verifiedAt": "2026-10-18T20:52:38Z",
+    "evidence": "Vercel success; origin and GitHub Camo SVG contain mercator-v2; actual README image decoded in Chrome. 256 baseline country cases and 3 renderer/route tests pass; 375px/1440px checked."
+  }
 }

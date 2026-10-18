@@ -34,3 +34,10 @@
 - All 61 automated checks and 78 browser tests passed in [CI run 39164523992](https://github.com/ux-git/contributors-map-widget/actions/runs/39164523992), including Firefox on Ubuntu. Deployment 7160468397 succeeded to GitHub Pages.
 - Verified https://ux-git.github.io/contributors-map-widget/ at 22:44 CEST: all 12 public files match the build manifest; desktop/mobile, dark theme, SVG downloads, and live GitHub data generation passed without page errors.
 - This follow-up is documentation only and does not redeploy. The website codebase remains c2314d6 even if repository HEAD advances.
+
+## 2026-10-18 — Organized README server refreshed
+
+- Identified the README image as a separate Python service, [sws2apps/github-contribution-heatmap](https://github.com/sws2apps/github-contribution-heatmap), rather than the GitHub Pages widget.
+- Ported the exact verified geometry, preserved themes/variants and attribution, corrected island country IDs and exact Niger resolution. Server code commit `c5bdb8837f01b7eb83695a5a53f403394192a52f` pushed to main.
+- All 256 original location cases and 3 new renderer/route tests passed; Chrome checked both variants/themes at 375px and 1440px; Python dependencies passed `pip check`.
+- Vercel production deployment `7160566917` succeeded. At `2026-10-18T20:52:38Z`, the original service URL and GitHub Camo image both served `mercator-v2`. Actual Organized README image verified in Chrome; no README modification or cache purge needed.
