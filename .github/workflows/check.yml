@@ -1,0 +1,58 @@
+name: Validate production widget
+on:
+  push:
+    paths-ignore:
+      - "**/*.md"
+      - "project-state.json"
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm run format:check
+      - run: npm audit --audit-level=high
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run build
+      - run: npm run verify:build
+      - run: npm run test:browser
+        env:
+          TEST_DIST: "1"
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: contributors-map-static
+          path: dist/
+          if-no-files-found: error
+      - uses: actions/configure-pages@v6.0.0
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+      - uses: actions/upload-pages-artifact@v5.0.0
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        with:
+          path: dist/
+  deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy verified static artifact
+        id: deployment
+        uses: actions/deploy-pages@v5.0.1

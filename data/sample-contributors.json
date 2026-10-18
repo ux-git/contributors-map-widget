@@ -1,0 +1,14 @@
+[
+  {"login":"sample-1","location":"Berlin, Germany","contributions":42},
+  {"login":"sample-2","location":"Germany","contributions":30},
+  {"login":"sample-3","location":"United States","contributions":26},
+  {"login":"sample-4","location":"Russia","contributions":20},
+  {"login":"sample-5","location":"Lagos, Nigeria","contributions":18},
+  {"login":"sample-6","location":"Brazil","contributions":15},
+  {"login":"sample-7","location":"Japan","contributions":14},
+  {"login":"sample-8","location":"Australia","contributions":12},
+  {"login":"sample-9","location":"United Kingdom","contributions":10},
+  {"login":"sample-10","location":"India","contributions":8},
+  {"login":"sample-11","location":"Paris","contributions":3},
+  {"login":"sample-12","location":null,"contributions":1}
+]

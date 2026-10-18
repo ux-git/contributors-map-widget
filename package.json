@@ -1,0 +1,30 @@
+{
+  "name": "contributors-map-widget",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "repository": "https://github.com/ux-git/contributors-map-widget.git",
+  "scripts": {
+    "prepare:map": "node scripts/prepare-map.mjs",
+    "generate": "node scripts/generate-map.mjs",
+    "start": "node scripts/serve.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "playwright test",
+    "check": "npm test && node scripts/project-status.mjs --check",
+    "build": "node scripts/build.mjs",
+    "preview": "node scripts/serve.mjs --dist",
+    "format": "prettier --write index.html style.css js scripts tests playwright.config.js",
+    "format:check": "prettier --check index.html style.css js scripts tests playwright.config.js",
+    "verify:build": "node scripts/verify-build.mjs"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.56.0",
+    "jsdom": "^26.1.0",
+    "polygon-clipping": "^0.15.7",
+    "prettier": "^3.9.10"
+  },
+  "engines": {
+    "node": ">=22.12"
+  }
+}
